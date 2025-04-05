@@ -6,12 +6,12 @@ using API.Models;
 using API.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")] // controller will be replaced by users because of UsersController
-    public class UsersController(DataContext context): ControllerBase
+    
+    public class UsersController(DataContext context): BaseApiController
     {
        
         [HttpGet]
@@ -21,7 +21,7 @@ namespace API.Controllers
 
                 return users;
         }
-
+        [Authorize]
         [HttpGet("{id:int}")]
         public  async Task<ActionResult<AppUser>> GetUser(int id)
         {
