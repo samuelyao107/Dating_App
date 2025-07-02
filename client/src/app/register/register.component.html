@@ -1,54 +1,22 @@
 <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
   <h2 class="text-center text-primary">Sign up</h2>
   <hr>  
-  <div class="mb-3 form-floating">
-    <input
-      [class.is-invalid]="registerForm.get('username')?.errors && registerForm.get('username')?.touched"
-      type="text"
-      class="form-control"
-      name="username"
-      formControlName="username"
-      [(ngModel)]="model.username"
-      placeholder="Username"
-    >
-    <label>Username</label>
-    <div class="invalid-feedback text-start">Please enter a username</div>
+  <div class="mb-3">
+    <label style="margin-right: 10px;">I am a:</label>
+    <label class="form-check-label">
+      <input type="radio" class="form-check-input" value="male" formControlName="gender">Male
+    </label>
+    <label class="form-check-label">
+      <input type="radio" class="form-check-input" value="female" formControlName="gender">Female
+    </label>
   </div>
-
-  <div class="mb-3 form-floating">
-    <input
-      [class.is-invalid]="registerForm.get('password')?.errors && registerForm.get('password')?.touched"
-      type="password"
-      class="form-control"
-      name="password"
-      formControlName="password"
-      placeholder="Password"
-    >
-    <label>Password</label>
-    @if(registerForm.get('password')?.hasError('required')) {
-      <div class="invalid-feedback text-start">Password is required</div>
-    }
-    @if(registerForm.get('password')?.hasError('minlength')) {
-      <div class="invalid-feedback text-start">Password must be at least 4 characters</div>
-    }
-  </div>
-   <div class="mb-3 form-floating">
-    <input
-      [class.is-invalid]="registerForm.get('confirmPassword')?.errors && registerForm.get('confirmPassword')?.touched"
-      type="password"
-      class="form-control"
-      name="password"
-      formControlName="confirmPassword"
-      placeholder="Confirm Password"
-    >
-    <label>Confirm Password</label>
-  </div>
-  @if(registerForm.get('confirmPassword')?.hasError('required')) {
-    <div class="invalid-feedback text-start">You must confirm the password</div>
-  }
-  @if(registerForm.get('confirmPassword')?.hasError('isMatching')) {
-    <div class="invalid-feedback text-start">Passwords do not match</div>
-  }
+ <app-text-input [formControl]="$any(registerForm.controls['username'])" [label]="'Username'"></app-text-input>
+ <app-text-input [formControl]="$any(registerForm.controls['knownAs'])" [label]="'Known As'"></app-text-input>
+ <app-date-picker [formControl]="$any(registerForm.controls['dateOfBirth'])" [label]="'Date of Birth'" [maxDate]="maxDate"></app-date-picker>
+ <app-text-input [formControl]="$any(registerForm.controls['city'])" [label]="'City'" ></app-text-input>
+ <app-text-input [formControl]="$any(registerForm.controls['country'])" [label]="'Country'"></app-text-input>
+ <app-text-input [formControl]="$any(registerForm.controls['password'])" [label]="'Password'" [type]="'password'"></app-text-input>
+ <app-text-input [formControl]="$any(registerForm.controls['confirmPassword'])" [label]="'Confirm Password'" [type]="'password'"></app-text-input>
   <div class="form-group text-center">
      <button class="btn btn-success me-2" type="submit">Register</button>
      <button class="btn btn-default me-2" (click)="cancel()" type="button">Cancel</button>
