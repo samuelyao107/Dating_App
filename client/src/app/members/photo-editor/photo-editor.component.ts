@@ -38,13 +38,13 @@ export class PhotoEditorComponent implements OnInit {
           user.photoUrl = photo.url;
           this.accountService.setCurrentUser(user);
         }
-        const updateMember = { ...this.member() };
-        updateMember.photoUrl = photo.url;
-        updateMember.photos.forEach(p => {
+        const updatedMember = { ...this.member() };
+        updatedMember.photoUrl = photo.url;
+        updatedMember.photos.forEach(p => {
           if (p.isMain) p.isMain = false;
           if (p.id === photo.id) p.isMain = true;
         });
-        this.memberChange.emit(updateMember);
+        this.memberChange.emit(updatedMember);
       }
     });
   }
@@ -75,13 +75,24 @@ export class PhotoEditorComponent implements OnInit {
     }
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
-      if (response) {
-        const res = JSON.parse(response);
-        const photo = res.result;
-        this.member().photos.push(photo);
-        if (photo.isMain) {
-          this.accountService.currentUser.set(res);
-        }
+       const photo = JSON.parse(response);
+       const updatedMember = { ...this.member() };
+       updatedMember.photos.push(photo);
+       this.memberChange.emit(updatedMember);
+       if (photo.isMain) {
+         const user = this.accountService.currentUser();
+         if (user) {
+           user.photoUrl = photo.url;
+           this.accountService.setCurrentUser(user);
+         }
+
+        updatedMember.photoUrl = photo.url;
+        updatedMember.photos.forEach(p => {
+          if (p.isMain) p.isMain = false;
+          if (p.id === photo.id) p.isMain = true;
+        });
+        this.memberChange.emit(updatedMember);
+        
       }
     };
 
